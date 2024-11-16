@@ -4,6 +4,8 @@ import CategoryNews from "../pages/CategoryNews";
 import AuthLayOut from "../layouts/AuthLayOut";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+// import NewsDetails from "../pages/NewsDetails";
+import PrivateRouter from "./PrivatRouter";
 
 const router = createBrowserRouter([
   {
@@ -25,26 +27,28 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/news",
-    element: <h1>News Layout</h1>,
+    path: "/news/:id",
+    element: <PrivateRouter/>,
+    loader: ({ params }) =>
+      fetch(`https://openapi.programming-hero.com/api/news/${params.id}`),
   },
   {
     path: "auth",
-    element: <AuthLayOut>Login</AuthLayOut>,
-    children:[
+    element: <AuthLayOut></AuthLayOut>,
+    children: [
       {
-        path:"/auth/login",
-        element:<Login>Login</Login>
+        path: "login",
+        element: <Login></Login>,
       },
       {
-        path:"/auth/register",
-        element:<Register>Register</Register>
-      }
-    ]
+        path: "register",
+        element: <Register></Register>,
+      },
+    ],
   },
   {
     path: "*",
-    element: <h1>Error</h1>,
+    element: <h1>Error: Page Not Found</h1>,
   },
 ]);
 
